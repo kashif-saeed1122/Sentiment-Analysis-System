@@ -1,0 +1,47 @@
+import unittest
+import sys
+from pathlib import Path
+
+sys.path.append(str(Path(__file__).parent.parent))
+
+from src.preprocessing.text_preprocessing import TextPreprocessor
+
+class TestTextPreprocessor(unittest.TestCase):
+    def setUp(self):
+        self.preprocessor = TextPreprocessor()
+    
+    def test_remove_urls(self):
+        text = "Check this out https://example.com amazing!"
+        result = self.preprocessor.remove_urls(text)
+        self.assertNotIn("https://", result)
+    
+    def test_remove_mentions(self):
+        text = "Hey @user check this out"
+        result = self.preprocessor.remove_mentions(text)
+        self.assertNotIn("@user", result)
+    
+    def test_handle_hashtags(self):
+        text = "This is #awesome #great"
+        result = self.preprocessor.handle_hashtags(text)
+        self.assertIn("awesome", result)
+        self.assertNotIn("#", result)
+    
+    def test_basic_clean(self):
+        text = "THIS IS A TEST! Check @user #hashtag http://test.com"
+        result = self.preprocessor.basic_clean(text)
+        
+        self.assertEqual(result, result.lower())
+        self.assertNotIn("@user", result)
+        self.assertNotIn("http://", result)
+    
+    def test_empty_text(self):
+        result = self.preprocessor.basic_clean(None)
+        self.assertEqual(result, "")
+    
+    def test_remove_extra_spaces(self):
+        text = "This    has   many    spaces"
+        result = self.preprocessor.remove_extra_spaces(text)
+        self.assertEqual(result, "This has many spaces")
+
+if __name__ == '__main__':
+    unittest.main()

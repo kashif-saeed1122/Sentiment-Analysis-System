@@ -1,0 +1,28 @@
+{
+  "model_name": "ml_sentiment",
+  "model_type": "logistic_regression",
+  "vectorizer": {
+    "type": "tfidf",
+    "max_features": 10000,
+    "ngram_range": [1, 3],
+    "min_df": 2,
+    "max_df": 0.9
+  },
+  "classifier": {
+    "C": [0.1, 0.5, 1.0, 5.0, 10.0],
+    "penalty": ["l2"],
+    "solver": ["liblinear", "saga"],
+    "max_iter": [2000],
+    "class_weight": ["balanced"]
+  },
+  "grid_search": {
+    "cv": 5,
+    "scoring": "f1_weighted",
+    "n_jobs": -1
+  },
+  "paths": {
+    "model_dir": "saved_models/ml",
+    "vectorizer_path": "saved_models/ml/tfidf_vectorizer.pkl",
+    "model_path": "saved_models/ml/logistic_model.pkl"
+  }
+}
