@@ -1119,7 +1119,7 @@ python train_local_only.py  # Train ML only locally
 
 | Metric | ML Model (TF-IDF + LogReg) | DL Model (DistilBERT) |
 |--------|---------------------------|----------------------|
-| **Accuracy** | 86.4% | 88.6% |
+| **Accuracy** | 70.4% | 48.6% |
 | **Inference Speed** | 3.2 ms | 87.4 ms |
 | **Model Size** | 2.9 MB | 267 MB |
 | **Training Time** | 2 minutes | 12 minutes (CPU) |
@@ -1136,58 +1136,7 @@ python train_local_only.py  # Train ML only locally
 - Logistic Regression: C=5.0, multinomial
 - Training: GridSearchCV (5-fold CV, 50 fits)
 
-**Test Set Results (176 samples):**
 
-```
-              precision    recall  f1-score   support
-
-    Negative       0.87      0.84      0.86        58
-     Neutral       0.76      0.78      0.77        27
-    Positive       0.89      0.91      0.90        91
-
-    accuracy                           0.86       176
-   macro avg       0.84      0.84      0.84       176
-weighted avg       0.86      0.86      0.86       176
-```
-
-**Confusion Matrix:**
-```
-              Predicted
-              Neg  Neu  Pos
-Actual  Neg   49    3    6
-        Neu    4   21    2
-        Pos    6    2   83
-```
-
-**Key Observations:**
-- ✅ Excellent positive sentiment detection (F1: 0.90)
-- ✅ Good negative sentiment detection (F1: 0.86)
-- ⚠️  Neutral class more challenging (F1: 0.77)
-- ✅ Very fast inference (3.2 ms)
-- ✅ Tiny model size (2.9 MB)
-
----
-
-#### DL Model Performance
-
-**Configuration:**
-- Model: DistilBERT-base-uncased
-- Fine-tuning: 4 epochs, batch_size=16, lr=2e-5
-- Training: Early stopping (patience=2)
-
-**Test Set Results (176 samples):**
-
-```
-              precision    recall  f1-score   support
-
-    Negative       0.89      0.86      0.88        58
-     Neutral       0.79      0.81      0.80        27
-    Positive       0.91      0.93      0.92        91
-
-    accuracy                           0.89       176
-   macro avg       0.86      0.87      0.87       176
-weighted avg       0.89      0.89      0.89       176
-```
 
 **Confusion Matrix:**
 ```
@@ -1261,92 +1210,6 @@ Model Size:
 ```
 
 ---
-
-### Cost-Benefit Analysis
-
-#### ML Model (TF-IDF + Logistic Regression)
-
-**Strengths:**
-- ✅ Very fast inference (3.2 ms)
-- ✅ Tiny model size (2.9 MB)
-- ✅ Low memory usage (50 MB)
-- ✅ Quick training (2 minutes)
-- ✅ Interpretable features
-- ✅ Easy to deploy
-- ✅ Good accuracy (86%)
-
-**Weaknesses:**
-- ⚠️  Struggles with neutral class
-- ⚠️  Requires feature engineering
-- ⚠️  Less accurate than DL (-2%)
-
-**Best For:**
-- Real-time applications
-- High-volume predictions
-- Resource-constrained environments
-- Embedded systems
-- Cost-sensitive deployments
-
----
-
-#### DL Model (DistilBERT)
-
-**Strengths:**
-- ✅ Higher accuracy (89%)
-- ✅ Better neutral detection
-- ✅ No feature engineering needed
-- ✅ Handles complex language patterns
-- ✅ Transfer learning benefits
-
-**Weaknesses:**
-- ⚠️  Slow inference (87 ms)
-- ⚠️  Large model size (267 MB)
-- ⚠️  High memory usage (2 GB)
-- ⚠️  Long training time (12 min)
-- ⚠️  Requires GPU for production
-
-**Best For:**
-- Accuracy-critical applications
-- Low-volume predictions
-- Offline/batch processing
-- GPU-enabled environments
-- Research projects
-
----
-
-### Deployment Recommendations
-
-#### Scenario 1: High-Volume Production
-
-**Use ML Model**
-- Can handle 300+ requests/second
-- Low latency (3 ms)
-- Minimal server costs
-- Easy to scale horizontally
-
-**Example:** Social media monitoring, customer feedback analysis
-
----
-
-#### Scenario 2: Accuracy-Critical Application
-
-**Use DL Model**
-- Higher accuracy (89% vs 86%)
-- Better neutral detection
-- Worth the extra latency
-
-**Example:** Financial sentiment analysis, medical text analysis
-
----
-
-#### Scenario 3: Hybrid Approach (Recommended)
-
-**Strategy:**
-```
-1. Route 90% of traffic to ML model (fast, good enough)
-2. Route uncertain predictions (confidence < 0.7) to DL model
-3. Use DL for final validation on important decisions
-```
 
 **Benefits:**
 - Best of both worlds
