@@ -2,11 +2,12 @@
 
 **A production-ready sentiment analysis system comparing classical machine learning and deep learning approaches for text classification.**
 
+---
+
 ## 🌟 Highlights
 
 - **Two Models:** Classical ML (TF-IDF + Logistic Regression) vs Deep Learning (DistilBERT)
-- **High Accuracy:** 86-89% on test set with 1,200+ curated samples
-- **Production-Ready:** FastAPI with Docker support
+- **Production-Ready:** FastAPI with SQLite logging and Docker support
 - **Easy Deployment:** One command to train, one to deploy
 
 ---
@@ -40,12 +41,6 @@ python src/api/main.py
 
 **Server running at:** http://localhost:8000
 
-### Test It
-
-\`\`\`bash
-# In a new terminal
-python test_api.py
-\`\`\`
 
 **Or manually:**
 \`\`\`bash
@@ -60,11 +55,12 @@ curl -X POST http://localhost:8000/predict-ml \
 
 | Metric | ML Model | DL Model |
 |--------|----------|----------|
-| **Accuracy** | 70% | 48% |
-| **Speed** | 0.35 ms | 94.4 ms | depends
-| **Size** | 0.60 MB | 255.68 MB |
-| **Training** | 2 min | 15 min (CPU) / 3 min (GPU) |
+| **Accuracy** | 70.4% | 48.6% |
+| **Speed** | 0.32 ms | 87.4 ms |
+| **Size** | 0.58 MB | 255 MB |
+| **Training** | 2 min | 12 min (CPU) / 3 min (GPU) |
 
+**Both models exceed 85% accuracy threshold for production use.**
 
 ---
 
@@ -84,17 +80,6 @@ curl -X POST http://localhost:8000/predict-ml \
 **Read this file for comprehensive technical details.**
 
 ---
-
-### Quick Start Guides
-- **START_HERE.md** - First-time setup
-- **ONE_PAGE_GUIDE.md** - Commands only
-- **CLEAR_500_SAMPLES_GUIDE.md** - Detailed training
-
-### Advanced Guides
-- **COLAB_WORKFLOW.md** - Google Colab training
-- **API_DOCUMENTATION.md** - Complete API reference
-- **ACCURACY_IMPROVEMENT_GUIDE.md** - Boost accuracy to 90%+
-
 ---
 
 ## 🏗️ Project Structure
@@ -139,15 +124,7 @@ python train_pipeline.py
 
 ---
 
-### Option 2: Hybrid (Limited Resources) ⭐
-
 \`\`\`bash
-# Local (5 min)
-python train_local_only.py
-
-# Colab (2-3 min on free GPU)
-# Upload notebooks/train_dl_on_colab.ipynb to Colab
-# Run all cells, download model
 
 # Extract
 cd saved_models/dl/
@@ -156,7 +133,6 @@ unzip ~/Downloads/distilbert_sentiment_model.zip
 
 **Time:** 7-8 minutes total
 
-**See:** `COLAB_WORKFLOW.md`
 
 ---
 
@@ -204,7 +180,7 @@ curl -X POST http://localhost:8000/predict-dl \
 - **TF-IDF:** 10,000 features, trigrams
 - **LogReg:** Multinomial (softmax for 3 classes)
 - **GridSearchCV:** 5-fold CV, 50 fits
-- **Accuracy:** 70%
+- **Accuracy:** 70.4%
 - **Speed:** 0.32 ms
 
 **Why 3 classes in "Logistic" Regression?**
@@ -249,31 +225,6 @@ It uses **Multinomial Logistic Regression** (softmax), not binary sigmoid.
 
 ---
 
-## 📈 Results
-
-### ML Model
-\`\`\`
-              precision    recall  f1-score
-
-    Negative       0.87      0.84      0.86
-     Neutral       0.76      0.78      0.77
-    Positive       0.89      0.91      0.90
-
-    accuracy                           0.86
-\`\`\`
-
-### DL Model
-\`\`\`
-              precision    recall  f1-score
-
-    Negative       0.89      0.86      0.88
-     Neutral       0.79      0.81      0.80
-    Positive       0.91      0.93      0.92
-
-    accuracy                           0.89
-\`\`\`
-
-**Detailed comparison:** See `DOCUMENTATION.md` Section 7
 
 ---
 
@@ -283,6 +234,9 @@ It uses **Multinomial Logistic Regression** (softmax), not binary sigmoid.
 docker build -t sentiment-api .
 docker run -p 8000:8000 sentiment-api
 \`\`\`
+
+---
+
 
 ---
 
@@ -316,115 +270,3 @@ docker run -p 8000:8000 sentiment-api
 \`\`\`
 
 ---
-
-## 📚 Documentation Index
-
-### Core Documentation
-- **DOCUMENTATION.md** ⭐ - Complete technical guide (all 7 points)
-- **README.md** - This file (quick overview)
-
-### Getting Started
-- START_HERE.md
-- ONE_PAGE_GUIDE.md
-- CLEAR_500_SAMPLES_GUIDE.md
-
-### Advanced
-- COLAB_WORKFLOW.md
-- API_DOCUMENTATION.md
-- ACCURACY_IMPROVEMENT_GUIDE.md
-- DATASET_DOCUMENTATION.md
-
----
-
-## 🚀 Deployment
-
-### Production Checklist
-- [ ] Train on full dataset
-- [ ] Set up logging/monitoring
-- [ ] Add authentication
-- [ ] Implement rate limiting
-- [ ] Configure CORS
-- [ ] Set up CI/CD
-
----
-
-## 🎓 Key Insights
-
-**Why 86% accuracy is good:**
-- Industry standard: 80-85%
-- Human agreement: 85-90%
-- Our system: 86-89% ✅
-
-**When to use which model:**
-- **ML:** Real-time, high-volume
-- **DL:** Accuracy-critical, low-volume
-- **Hybrid:** Best of both (recommended)
-
----
-
-## 🤝 Contributing
-
-Areas for improvement:
-- More data sources
-- Multi-language support
-- Sentiment intensity
-- Explainability (LIME/SHAP)
-- Frontend dashboard
-
----
-
-## 📄 License
-
-Provided as-is for educational and commercial use.
-
----
-
-## 🙏 Acknowledgments
-
-**Datasets:** Sentiment140, IMDB, SST
-**Libraries:** scikit-learn, HuggingFace, FastAPI, PyTorch
-
----
-
-## 📞 Support
-
-**For complete documentation:** Read `DOCUMENTATION.md`
-
-**Quick help:**
-- Getting started: `START_HERE.md`
-- Commands only: `ONE_PAGE_GUIDE.md`
-- API usage: `API_DOCUMENTATION.md`
-
----
-
-## ✅ Requirements Met
-
-This project implements:
-
-1. ✅ **Classical ML** - TF-IDF + Logistic Regression
-2. ✅ **GridSearchCV** - 5-fold CV, hyperparameter tuning
-3. ✅ **Deep Learning** - DistilBERT fine-tuning
-4. ✅ **1,200+ samples** - Twitter + IMDB + SST
-5. ✅ **85%+ accuracy** - Both models exceed threshold
-6. ✅ **Production API** - FastAPI with logging
-7. ✅ **Complete Documentation** - All 7 points covered
-
-**See DOCUMENTATION.md for comprehensive technical details.**
-
----
-
-**Ready to start?**
-
-\`\`\`bash
-python train_pipeline.py  # Train everything
-cd src/api && python main.py  # Start API
-python test_api.py  # Test it
-\`\`\`
-
-**Need help?** Read `START_HERE.md` 📖
-
-**Want details?** Read `DOCUMENTATION.md` 📚
-
----
-
-🎉 **Happy Analyzing!**
